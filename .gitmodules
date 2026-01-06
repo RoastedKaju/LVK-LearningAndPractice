@@ -1,0 +1,6 @@
+[submodule "external/lvk"]
+	path = external/lvk
+	url = https://github.com/corporateshark/lightweightvk.git
+[submodule "external/assimp"]
+	path = external/assimp
+	url = https://github.com/assimp/assimp.git
