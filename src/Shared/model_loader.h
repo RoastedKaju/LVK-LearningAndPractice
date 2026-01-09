@@ -10,10 +10,13 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
+#include <stb/stb_image.h>
+
 
 struct Vertex
 {
 	glm::vec3 position;
+	glm::vec2 uv;
 };
 
 inline void loadModelData(const std::filesystem::path& file, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
@@ -42,6 +45,36 @@ inline void loadModelData(const std::filesystem::path& file, std::vector<Vertex>
 			outIndices.push_back(mesh->mFaces[i].mIndices[j]);
 		}
 	}
+	// UVs
+	if (mesh->HasTextureCoords(0))
+	{
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+		{
+			const aiVector3D& uv = mesh->mTextureCoords[0][i];
+			outVertices.at(i).uv = glm::vec2(uv.x, uv.y);
+		}
+	}
 
 	aiReleaseImport(scene);
+}
+
+inline lvk::Holder<lvk::TextureHandle> loadTexture(const std::filesystem::path& filePath, std::unique_ptr<lvk::IContext>& ctx)
+{
+	int w, h, comp;
+	const uint8_t* image = stbi_load(filePath.string().c_str(), &w, &h, &comp, 4);
+	assert(image);
+
+	lvk::Holder<lvk::TextureHandle> texture = ctx->createTexture({
+			.type = lvk::TextureType_2D,
+			.format = lvk::Format_RGBA_UN8,
+			.dimensions = {(uint32_t)w, (uint32_t)h},
+			.usage = lvk::TextureUsageBits_Sampled,
+			.data = image,
+			.debugName = "03_STB.jpg"
+
+		});
+
+	stbi_image_free((void*)image);
+
+	return texture;
 }

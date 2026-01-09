@@ -34,6 +34,8 @@ int main()
 
 	// Call load model data function
 	loadModelData(std::filesystem::absolute("../../../models/rubber_duck/scene.gltf"), verts, indices);
+	// Call load texture function
+	lvk::Holder<lvk::TextureHandle> texture = loadTexture(std::filesystem::absolute("../../../models/rubber_duck/textures/Duck_baseColor.png"), ctx);
 
 	// Vertex Buffer
 	lvk::Holder<lvk::BufferHandle> vertexBuffer = ctx->createBuffer({
@@ -63,8 +65,19 @@ int main()
 
 	// Attribute pointer
 	const lvk::VertexInput vdesc = {
-		.attributes = { {.location = 0, .format = lvk::VertexFormat::Float3, .offset = 0 } },
-		.inputBindings = { {.stride = sizeof(glm::vec3) } }
+		.attributes = { 
+			{
+				.location = 0,
+				.format = lvk::VertexFormat::Float3,
+				.offset = offsetof(Vertex, position)
+			},
+			{
+				.location = 1,
+				.format = lvk::VertexFormat::Float2,
+				.offset = offsetof(Vertex, uv)
+			}
+		},
+		.inputBindings = { {.stride = sizeof(Vertex) } }
 	};
 
 	// Shaders
@@ -126,6 +139,16 @@ int main()
 			.depthStencil = { .texture = depthTexture }
 		};
 
+		// Perframe data
+		const struct PerFrameData
+		{
+			glm::mat4 mvp;
+			uint32_t textureId;
+		} pc = {
+			.mvp = p * v * m,
+			.textureId = texture.index()
+		};
+
 		lvk::ICommandBuffer& buf = ctx->acquireCommandBuffer();
 		{
 			buf.cmdBeginRendering(renderPass, framebuffer);
@@ -135,7 +158,7 @@ int main()
 				buf.cmdBindIndexBuffer(indexBuffer, lvk::IndexFormat_UI32);
 				buf.cmdBindRenderPipeline(pipelineSolid);
 				buf.cmdBindDepthState({ .compareOp = lvk::CompareOp_Less, .isDepthWriteEnabled = true });
-				buf.cmdPushConstants(p * v * m);
+				buf.cmdPushConstants(pc);
 				buf.cmdDrawIndexed(indices.size());
 				buf.cmdBindRenderPipeline(pipelineWireframe);
 				buf.cmdSetDepthBiasEnable(true);
