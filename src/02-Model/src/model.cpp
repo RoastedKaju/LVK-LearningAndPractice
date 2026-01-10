@@ -81,8 +81,8 @@ int main()
 	};
 
 	// Shaders
-	lvk::Holder<lvk::ShaderModuleHandle> vert = loadShaderModule(ctx, std::filesystem::absolute("D:/Projects/Vulkan-Practice/shaders/02-Model/main.vert"));
-	lvk::Holder<lvk::ShaderModuleHandle> frag = loadShaderModule(ctx, std::filesystem::absolute("D:/Projects/Vulkan-Practice/shaders/02-Model/main.frag"));
+	lvk::Holder<lvk::ShaderModuleHandle> vert = loadShaderModule(ctx, std::filesystem::absolute("../../../shaders/02-Model/main.vert"));
+	lvk::Holder<lvk::ShaderModuleHandle> frag = loadShaderModule(ctx, std::filesystem::absolute("../../../shaders/02-Model/main.frag"));
 
 	// Render piplines
 	// Soild pipeline

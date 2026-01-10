@@ -13,4 +13,5 @@ add_subdirectory("external/assimp")
 add_subdirectory("src/00-Setup")
 add_subdirectory("src/01-Triangle")
 add_subdirectory("src/02-Model")
+add_subdirectory("src/03-Imgui")
 
