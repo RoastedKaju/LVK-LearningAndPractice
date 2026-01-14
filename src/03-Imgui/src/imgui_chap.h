@@ -1,3 +1,5 @@
+#pragma once
+
 #include <lvk/LVK.h>
 #include <lvk/HelpersImGui.h>
 #include <imgui/imgui.h>
@@ -15,7 +17,7 @@
 
 #include "shader_processor.h"
 
-int main()
+inline void imGuiExample()
 {
 	minilog::initialize(nullptr, { .threadNames = false });
 
@@ -143,7 +145,7 @@ int main()
 			imgui->endFrame(buf);
 
 			LVK_PROFILER_ZONE_END();
-			
+
 			buf.cmdEndRendering();
 		}
 		ctx->submit(buf, ctx->getCurrentSwapchainTexture());
@@ -161,5 +163,4 @@ int main()
 	glfwDestroyWindow(window);
 	glfwTerminate();
 
-	return 0;
 }

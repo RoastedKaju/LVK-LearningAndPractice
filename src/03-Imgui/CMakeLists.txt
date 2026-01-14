@@ -23,6 +23,7 @@ target_include_directories(${ChapterName} PUBLIC ${CMAKE_SOURCE_DIR}/src/Shared)
 
 # add Demo window source file
 target_sources(${ChapterName} PRIVATE "${CMAKE_SOURCE_DIR}/external/lvk/third-party/deps/src/imgui/imgui_demo.cpp")
+target_sources(${ChapterName} PRIVATE "${CMAKE_SOURCE_DIR}/external/lvk/third-party/deps/src/implot/implot_demo.cpp")
 
 if(WIN32)
   target_compile_definitions(${ChapterName} PUBLIC "NOMINMAX")
