@@ -240,9 +240,11 @@ inline void cubemap()
 
 	texture.reset();
 	cubemapTex.reset();
+	depthTexture.reset();
 
 	bufferVertices.reset();
 	bufferIndices.reset();
+	bufferPerFrame.reset();
 
 	pipeline.reset();
 	pipelineSkybox.reset();
